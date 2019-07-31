@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from rest_framework import generics
 from .models import User
 from .serializers import UserSerializer
+from django.contrib.auth import get_user_model
+from database.models import Movie
+from django.shortcuts import render, get_object_or_404
 from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import AllowAny
-from django.contrib.auth import get_user_model
 from rest_framework import generics
 from .serializers import *
 
@@ -47,3 +49,15 @@ class UserCreateAPI(generics.CreateAPIView):  # user create 값 받기?
     # queryset = get_user_model().objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = (AllowAny,)
+
+
+class UserProfileAPI(generics.ListAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = (AllowAny,)
+
+    # 본인에 관한 정보만 노출되도록 설정코드작성 - 관리자는 전체목록 확인 가능
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(pk=self.request.user.id)
+        return queryset

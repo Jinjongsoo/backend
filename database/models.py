@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from django.contrib.auth import get_user_model
 
 AGE_RATE = (
     (0, '전체 관람'),
@@ -13,6 +14,8 @@ TYPE = (
     (2, '4D'),
     (3, 'Digital'),
 )
+
+User = get_user_model()
 
 
 # Create your models here.
@@ -43,6 +46,7 @@ class Screen(models.Model):
     cinema_id = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name="cinema_id")
     screen_number = models.IntegerField()
     total_seat = models.IntegerField()
+
     # type = MultiSelectField(choices=TYPE, max_choices=4)
 
     class Meta:
@@ -134,7 +138,8 @@ class Schedule_time(models.Model):
 
 
 class Seat(models.Model):
-    schedule_time = models.OneToOneField(Schedule_time, on_delete=models.CASCADE, related_name='schedule_time_seat', primary_key=True)
+    schedule_time = models.OneToOneField(Schedule_time, on_delete=models.CASCADE, related_name='schedule_time_seat',
+                                         primary_key=True)
     # screen_id = models.ForeignKey(Screen, on_delete=models.CASCADE, related_name='screen_id_seat', null=True)
     seat_number = models.TextField(blank=True, default='')
 

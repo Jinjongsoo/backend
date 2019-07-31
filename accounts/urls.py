@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import UserView, UserDetail, UserCreateAPI, UserListAPI
+from .views import UserView, UserDetail, UserCreateAPI, UserListAPI, UserProfileAPI
 
 
 app_name = 'accounts'
@@ -12,4 +12,5 @@ urlpatterns = [
     path('detail/<int:pk>/', UserDetail.as_view()),  # 기본 rest_framework 디테일 URL
     path('create/', UserCreateAPI.as_view(), name='user_create'),  # views 에 유저 생성 URL
     path('list/', UserListAPI.as_view(), name='user_list'),  # views 에 유저 list URL
+    path('profile/', UserProfileAPI.as_view(), name='user_profile'),  # 로그인 유저 정보
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from database.models import Movie
 
 
 # Create your models here.
@@ -57,5 +58,11 @@ class User(AbstractUser):
     birthDate = models.DateField(verbose_name='생년월일', null=True, blank=True)  # DateField
     name = models.CharField(verbose_name='이름', max_length=30)
     watchedMovie = models.CharField(verbose_name='본 영화', max_length=20, blank=True)  # CharField
-    wishMovie = models.CharField(verbose_name='보고싶어', max_length=20, blank=True)  # CharField
+    wishMovie = models.ManyToManyField(Movie, verbose_name='보고싶어', blank=True, related_name='wishMovie')
+    # movieCount = models.PositiveIntegerField(default=0)  # 보고싶어 카운트 (front? back?)
 
+    class Meta:
+        ordering = ['email']
+
+    def __str__(self):
+        return self.email
